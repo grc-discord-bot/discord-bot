@@ -15,10 +15,6 @@ git clone https://github.com/grc-discord-bot/discord-bot.git
 cd discord-bot
 source venv/bin/activate
 ```
-* Deactivate the virtual environment.
-```
-source venv/bin/deactivate
-```
 * Install the dependencies.
 ```
 pip install -r requirements.txt
