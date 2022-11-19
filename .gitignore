@@ -3,4 +3,3 @@
 /.out/**
 .DS_Store
 /.vscode/
-src/config.py
