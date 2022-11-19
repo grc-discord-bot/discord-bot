@@ -1,19 +1,4 @@
 /.DS_Store/**
-/target/**
 /.idea/**
 /.out/**
-/File-Downloader.iml
 .DS_Store
-
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-/.settings/
-/.github/
-/out/
