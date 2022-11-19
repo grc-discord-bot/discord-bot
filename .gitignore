@@ -7,3 +7,4 @@
 /venv/
 /src/config.py
 /src/SecretKey.txt
+__pycache__/
