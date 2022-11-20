@@ -1,4 +1,4 @@
-# discord-bot
+# Discord-Bot
 Google Developer Student Club@GRC/Competitive Programming Discord Bot
 
 ## Dependencies
