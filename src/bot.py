@@ -61,6 +61,11 @@ def run_discord_bot():
         channel = client.get_channel(1044095575282425906)
         await channel.send(f'{member} Hello and welcome to the server!')
 
+    @client.event
+    async def on_member_remove(member):
+        channel = client.get_channel(1044095575282425906)
+        await channel.send(f'{member} has left the server.')
+        
     # add more events
     # add more commands
 
