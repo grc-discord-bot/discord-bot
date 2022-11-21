@@ -24,8 +24,18 @@ async def hello(ctx):
 
 @client.event
 async def on_member_join(memebr):
-    await member.send("Test")
+    channel= client.get_channel(1044095575282425906)
+    await channel.send("hello and welcome to our club server")
+    #these two lines below were just trying out something 
+    #await channel.send(f"{member.mention} hello and welcome to our club server'")
+    #f"{member} welcome to the server!'
 
-#token -> never want to reveal this
+#not a really useful event since the user who left can't see this message
+#@client.event
+#async def on_member_remove(memebr):
+#    channel= client.get_channel(1044095575282425906)
+#    await channel.send("so sad you leave, but you are always welcome to come back! although you can't see this:(")
+
+#token -> never want to reveal this!!
 client.run(token)
 
