@@ -5,6 +5,6 @@
 /.vscode/
 /src/__pycache__/**
 /venv/
-/src/config.py
+/src/.config.py
 /src/SecretKey.txt
 __pycache__/

@@ -1,6 +1,7 @@
 from config import token
 import discord
 intents = discord.Intents.all()
+intents.members=True
 intents.typing = False
 intents.presences = False
 
@@ -10,6 +11,7 @@ from discord.ext import commands
 client = commands.Bot(command_prefix='!', intents=intents)
 
 # async is a special type of function, on_ready is also a function that it will execute automatically when it is ready to receive command
+#event is when encounter with certain condition, it will run certain code
 @client.event
 async def on_ready():
     print("I am still alive!!")
@@ -20,5 +22,10 @@ async def on_ready():
 async def hello(ctx):
     await ctx.send("Welcome to Google Student Developer Club@GRC/competitive programming club!")
 
+@client.event
+async def on_member_join(memebr):
+    await member.send("Test")
+
 #token -> never want to reveal this
 client.run(token)
+
