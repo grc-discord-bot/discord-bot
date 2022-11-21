@@ -8,3 +8,4 @@
 /src/.config.py
 /src/SecretKey.txt
 __pycache__/
+src/.env
