@@ -61,4 +61,7 @@ def run_discord_bot():
         channel = client.get_channel(1044095575282425906)
         await channel.send(f'{member} Hello and welcome to the server!')
 
+    # add more events
+    # add more commands
+
     client.run(token)
