@@ -1,4 +1,3 @@
-import discord
 
 
 def get_response(message: str) -> str:

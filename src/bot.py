@@ -45,7 +45,8 @@ def run_discord_bot():
 
         print(f'{username} said: "{user_message}" ({channel})')
 
-        # begin a private conversation with the bot initiated by a question mark
+        # begin a private conversation with the bot initiated
+        # by a question mark ?hello
         if user_message[0] == '?':
             user_message = user_message[1:]
             await send_message(message, user_message, is_private=True)
