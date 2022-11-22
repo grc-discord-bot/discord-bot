@@ -28,7 +28,7 @@ def run_discord_bot():
     intents.message_content = True
     intents.typing = False
     intents.presences = False
-    client = commands.Bot(command_prefix='!', intents=intents)
+    client = commands.Bot(command_prefix='$', intents=intents)
 
     @client.event
     async def on_ready():
