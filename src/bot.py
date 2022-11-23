@@ -47,7 +47,7 @@ def run_discord_bot():
     intents.message_content = True
     intents.typing = False
     intents.presences = False
-    client = commands.Bot(command_prefix='$', intents=intents, help_command=CustomHelpCommand)
+    client = commands.Bot(command_prefix='$', intents=intents)
 
     def get_channel(number):
         return client.get_channel(number)
