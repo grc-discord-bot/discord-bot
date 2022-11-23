@@ -40,6 +40,7 @@ async def send_message(message, user_message, is_private):
 def run_discord_bot():
     configure()
     token = os.getenv('token_key')
+    chanel_number = 1044095575282425906
 
     intents = discord.Intents.all()
     intents.members = True
@@ -47,6 +48,9 @@ def run_discord_bot():
     intents.typing = False
     intents.presences = False
     client = commands.Bot(command_prefix='$', intents=intents, help_command=CustomHelpCommand)
+
+    def get_channel(number):
+        return client.get_channel(number)
 
     @client.event
     async def on_ready():
@@ -63,7 +67,8 @@ def run_discord_bot():
 
         print(f'{username} said: "{user_message}" ({channel})')
 
-        # begin a private conversation with the bot initiated by a question mark
+        # begin a private conversation with the bot initiated
+        # by a question mark ?hello
         if user_message[0] == '?':
             user_message = user_message[1:]
             await send_message(message, user_message, is_private=True)
@@ -72,12 +77,12 @@ def run_discord_bot():
 
     @client.event
     async def on_member_join(member):
-        channel = client.get_channel(1044095575282425906)
+        channel = get_channel(chanel_number)
         await channel.send(f'{member} Hello and welcome to the server!')
 
     @client.event
     async def on_member_remove(member):
-        channel = client.get_channel(1044095575282425906)
+        channel = get_channel(chanel_number)
         await channel.send(f'{member} has left the server.')
 
     # add more events
