@@ -12,7 +12,7 @@ def get_response(message: str) -> str:
         `You can type in the commands below in the channel #bot-commands to interact with Mardo:`
         `1. $help -> which will make this current message appear`
         `2. hello -> which will give you a welcome message`
-        `3. ? -> to start a private message with Mardo`
+        `3. ?hello -> to start a private message with Mardo`
         """
 
 #    return "I don't understand what you are saying."
