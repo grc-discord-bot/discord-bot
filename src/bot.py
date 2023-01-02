@@ -86,12 +86,28 @@ def run_discord_bot():
         channel = get_channel(chanel_number)
         await channel.send(f'{member} has left the server.')
 
-    # add more events
-    # add more commands
+    # Add more events
 
+    # Add more commands
     @client.command()
     async def resources(ctx):
         response = responses.get_response('$resources')
         await ctx.send(response)
 
+    @client.command()
+    async def events(ctx):
+        response = responses.get_response('$events')
+        await ctx.send(response)
+
+    @client.command()
+    async def join(ctx):
+        response = responses.get_response('$join')
+        await ctx.send(response)
+
+    @client.command()
+    async def contact(ctx):
+        response = responses.get_response('$contact')
+        await ctx.send(response)
+
     client.run(token)
+
