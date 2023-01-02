@@ -89,4 +89,9 @@ def run_discord_bot():
     # add more events
     # add more commands
 
+    @client.command()
+    async def resources(ctx):
+        response = responses.get_response('$resources')
+        await ctx.send(response)
+
     client.run(token)
