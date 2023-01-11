@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 import responses
-# from env import load_dotenv
 from dotenv import load_dotenv
 import os
 
@@ -30,10 +29,19 @@ def configure():
 
 
 async def send_message(message, user_message, is_private):
+    # try:
+    #     response = await responses.get_response(user_message)
+    #     await message.author.send(response) if is_private else await message.channel.send(response)
+    #
+    # except Exception as e:
+    #     print(e)
+
     try:
         response = responses.get_response(user_message)
-        await message.author.send(response) if is_private else await message.channel.send(response)
-
+        if is_private:
+            await message.author.send(response)
+        else:
+            await message.channel.send(response)
     except Exception as e:
         print(e)
 
@@ -80,6 +88,10 @@ def run_discord_bot():
     async def on_member_join(member):
         channel = get_channel(chanel_number)
         await channel.send(f'{member} Hello and welcome to the server!')
+        await member.send(
+            f'Hello {member}! Welcome. '
+            f'check out the announcements channel for important information about the club! '
+            f'https://discord.com/channels/1043278905806692442/1043279855938191381')
 
     @client.event
     async def on_member_remove(member):
@@ -110,4 +122,3 @@ def run_discord_bot():
         await ctx.send(response)
 
     client.run(token)
-
