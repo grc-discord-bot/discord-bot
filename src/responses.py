@@ -17,6 +17,7 @@ def get_response(message: str) -> str:
         `5. $events -> to get a list of upcoming events`
         `6. $join -> to get information on how to join our club`
         `7. $contact -> to get information on how to contact us`
+        `8. $website -> to know more about the club from our website`
         """
 
     if process_msg == '$resources':
