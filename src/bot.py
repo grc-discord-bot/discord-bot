@@ -51,7 +51,7 @@ def run_discord_bot():
     token = os.getenv('token_key')
     chanel_number = 1044095575282425906
 
-    intents = discord.Intents.all()
+    intents = discord.Intents.default()
     intents.members = True
     intents.message_content = True
     intents.typing = False
