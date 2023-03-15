@@ -7,15 +7,15 @@ Google Developer Student Club@GRC/Competitive Programming Discord Bot
 
 ## Getting Started
 * Clone the repo or paste this in your terminal.
-```
-git clone https://github.com/grc-discord-bot/discord-bot.git
-```
+  ```
+  git clone https://github.com/grc-discord/discord-bot.git
+  ```
 * Activate the virtual environment.
-```
-cd discord-bot
-source venv/bin/activate
-```
+  ```
+  cd discord-bot
+  source venv/bin/activate
+  ```
 * Install the dependencies.
-```
-pip install -r requirements.txt
-```
+  ```
+  pip install -r requirements.txt
+  ```
