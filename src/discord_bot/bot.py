@@ -1,4 +1,5 @@
 import os
+import logging
 
 import discord
 from discord.ext import commands
@@ -24,6 +25,7 @@ class Bot(discord.Client):
         print(f'Successfully logged in as {self.user}')
 
     async def on_message(self, message):
+        print(f'Message from {message.author}: {message.content}')
         if message.author == self.user:
             return
 
@@ -40,9 +42,25 @@ class Bot(discord.Client):
                 await message.author.send(response)
             else:
                 raise ValueError('Invalid message format. Message should be "?hello"')
+        elif user_message.startswith(('/ai', '/bot', '/chatgpt')):
+            command = user_message.split(' ')[0]
+            user_message = user_message.replace(command, '').strip()
+            print(f'Command: {command}, User Message: {user_message}')
+
+            if user_message:
+                response = chatgpt_response(prompt=user_message)
+                await message.channel.send(f'Answer: {response}')
+            else:
+                raise ValueError('No message provided. Message should be "/ai <your message>"')
         else:
             response = responses.get_response(user_message)
             await message.channel.send(response)
+
+        @self.event
+        async def on_command_error(ctx, error):
+            if isinstance(error, commands.errors.CommandNotFound):
+                return
+            logging.exception('Error executing command', exc_info=error)
 
     async def on_member_join(self, member):
         channel = self.get_channel(self.channel_number)
@@ -58,24 +76,6 @@ class Bot(discord.Client):
 
     def get_channel(self, number):
         return self.client.get_channel(number)
-
-    # async def on_ready(self):
-    #     print(f'Successfully logged in as {self.user}')
-    #
-    # async def on_message(self, message):
-    #     print(f'Message from {message.author}: {message.content}')
-    #     if message.author == self.user:
-    #         return
-    #     command, user_message = None, None
-    #
-    #     if message.content.startswith(('/ai', '/bot', '/chatgpt')):
-    #         command = message.content.split(' ')[0]
-    #         user_message = message.content.replace(command, '').strip()
-    #         print(f'Command: {command}, User Message: {user_message}')
-    #
-    #     if command in ['/ai', '/bot', '/chatgpt']:
-    #         bot_response = chatgpt_response(prompt=user_message)
-    #         await message.channel.send(f'Answer: {bot_response}')
 
 
 async def send_message(message, user_message, is_private):
@@ -107,6 +107,7 @@ async def join(ctx):
 async def contact(ctx):
     response = responses.get_response('contact')
     await ctx.send(response)
+
 
 intents = discord.Intents.default()
 intents.members = True
