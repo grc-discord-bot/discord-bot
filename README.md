@@ -20,7 +20,7 @@ Google Developer Student Club@GRC/Competitive Programming Discord Bot
   ```
 * Install the dependencies.
   ```
-  pip install -r requirements.txt
+  pip3 install -r requirements.txt
   ```
   
 ## Contributing
