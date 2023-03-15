@@ -16,6 +16,7 @@ def get_response(message: str) -> str:
         `6. $join -> to get information on how to join our club`
         `7. $contact -> to get information on how to contact us`
         `8. $website -> to know more about the club from our website`
+        `9. /ai <your message> -> to interact with our chatbot`
         """
 
     if process_msg == '$resources':
