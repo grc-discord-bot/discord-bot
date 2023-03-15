@@ -3,7 +3,10 @@ Google Developer Student Club@GRC/Competitive Programming Discord Bot
 
 ## Dependencies
 * [python](https://www.python.org/) 3.8.0+
-* [discord.py](https://pypi.org/project/discord.py/) 2.1.0
+* [discord.py](https://pypi.org/project/discord.py/) 2.2.2
+* [python-dotenv](https://pypi.org/project/python-dotenv/) 1.0.0
+* [openai](https://pypi.org/project/openai/) 0.27.2
+* [requests](https://pypi.org/project/requests/) 2.28.2
 
 ## Getting Started
 * Clone the repo or paste this in your terminal.
