@@ -3,6 +3,7 @@ import logging
 
 import discord
 from discord.ext import commands
+import discord.ui
 from dotenv import load_dotenv
 
 from src.discord_bot import responses
@@ -11,6 +12,12 @@ from src.chatgpt.openai import chatgpt_response
 load_dotenv()
 
 discord_token = os.getenv('DISCORD_TOKEN')
+
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
+intents.typing = False
+intents.presences = False
 
 
 class Bot(discord.Client):
@@ -107,12 +114,5 @@ async def join(ctx):
 async def contact(ctx):
     response = responses.get_response('contact')
     await ctx.send(response)
-
-
-intents = discord.Intents.default()
-intents.members = True
-intents.message_content = True
-intents.typing = False
-intents.presences = False
 
 bot = Bot(intents=intents)
