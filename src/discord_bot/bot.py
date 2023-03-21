@@ -1,118 +1,104 @@
-import os
-import logging
-
 import discord
 from discord.ext import commands
-import discord.ui
-from dotenv import load_dotenv
 
 from src.discord_bot import responses
-from src.chatgpt.openai import chatgpt_response
-
-load_dotenv()
-
-discord_token = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
-intents.typing = False
-intents.presences = False
+
+bot = commands.Bot(command_prefix="$", intents=intents)
 
 
-class Bot(discord.Client):
-    def __int__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+@bot.event
+async def on_ready():
+    print(f'Logged in as {bot.user} (ID: {bot.user.id})')
+    print('------')
 
-        self.channel_number = 1044095575322425906
 
-        self.client = commands.Bot(command_prefix='$', intents=intents)
-
-    async def on_ready(self):
-        print(f'Successfully logged in as {self.user}')
-
-    async def on_message(self, message):
-        print(f'Message from {message.author}: {message.content}')
-        if message.author == self.user:
-            return
-
-        username = str(message.author)
-        user_message = str(message.content)
-        channel = str(message.channel)
-
-        print(f'Message from {message.author}: {message.content} ({message.channel} channel)')
-
-        if user_message.startswith('?'):
-            user_message = user_message[1:]
-            if user_message == 'hello':
-                response = responses.get_response(user_message)
-                await message.author.send(response)
-            else:
-                raise ValueError('Invalid message format. Message should be "?hello"')
-        elif user_message.startswith(('/ai', '/bot', '/chatgpt')):
-            command = user_message.split(' ')[0]
-            user_message = user_message.replace(command, '').strip()
-            print(f'Command: {command}, User Message: {user_message}')
-
-            if user_message:
-                response = chatgpt_response(prompt=user_message)
-                await message.channel.send(f'Answer: {response}')
-            else:
-                raise ValueError('No message provided. Message should be "/ai <your message>"')
-        else:
-            response = responses.get_response(user_message)
-            await message.channel.send(response)
-
-        @self.event
-        async def on_command_error(ctx, error):
-            if isinstance(error, commands.errors.CommandNotFound):
-                return
-            logging.exception('Error executing command', exc_info=error)
-
-    async def on_member_join(self, member):
-        channel = self.get_channel(self.channel_number)
-        await channel.send(f'{member} Hello and welcome to the server!')
+@bot.event
+async def on_member_join(member):
+    guild = member.guild
+    if guild.system_channel is not None:
+        to_send = f'Welcome {member.mention} to {guild.name}!'
+        await guild.system_channel.send(to_send)
         await member.send(
-            f'Hello {member}! Welcome. '
-            f'check out the announcements channel for important information about the club! '
+            f'Hello {member.name}! Welcome. '
+            f'check out the announcements channel for important information about the club. '
             f'https://discord.com/channels/1043278905806692442/1043279855938191381')
 
-    async def on_member_remove(self, member):
-        channel = self.get_channel(self.channel_number)
-        await channel.send(f'{member} has left the server.')
 
-    def get_channel(self, number):
-        return self.client.get_channel(number)
-
-
-async def send_message(message, user_message, is_private):
-    try:
-        response = responses.get_response(user_message)
-        if is_private:
-            await message.author.send(response)
-        else:
-            await message.channel.send(response)
-    except Exception as e:
-        print(e)
+@bot.event
+async def on_member_leave(member):
+    guild = member.guild
+    if guild.system_channel is not None:
+        to_send = f'Goodbye {member.mention} from {guild.name}!'
+        await guild.system_channel.send(to_send)
 
 
+@bot.command()
+async def joined(ctx, member: discord.Member):
+    """Says when a member joined."""
+    await ctx.send(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
+
+
+@bot.command()
+async def _help(ctx):
+    response = responses.get_response('help')
+    await ctx.send(response)
+
+
+@bot.command()
+async def hello(ctx):
+    response = responses.get_response('hello')
+    await ctx.send(response)
+
+
+@bot.command()
 async def resources(ctx):
     response = responses.get_response('resources')
     await ctx.send(response)
 
 
+@bot.command()
 async def events(ctx):
     response = responses.get_response('events')
     await ctx.send(response)
 
 
+@bot.command()
 async def join(ctx):
     response = responses.get_response('join')
     await ctx.send(response)
 
 
+@bot.command()
 async def contact(ctx):
     response = responses.get_response('contact')
     await ctx.send(response)
 
-bot = Bot(intents=intents)
+
+# Example from: https://github.com/Rapptz/discord.py/blob/v2.2.2/examples/views/counter.py
+# Define a simple View that gives us a counter button
+class Counter(discord.ui.View):
+
+    # Define the actual button
+    # When pressed, this increments the number displayed until it hits 5.
+    # When it hits 5, the counter button is disabled and it turns green.
+    # note: The name of the function does not matter to the library
+    @discord.ui.button(label='0', style=discord.ButtonStyle.red)
+    async def count(self, interaction: discord.Interaction, button: discord.ui.Button):
+        number = int(button.label) if button.label else 0
+        if number + 1 >= 5:
+            button.style = discord.ButtonStyle.green
+            button.disabled = True
+        button.label = str(number + 1)
+
+        # Make sure to update the message with our updated selves
+        await interaction.response.edit_message(view=self)
+
+
+@bot.command()
+async def counter(ctx: commands.Context):
+    """Starts a counter for pressing."""
+    await ctx.send('Press!', view=Counter())
