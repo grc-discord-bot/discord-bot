@@ -102,3 +102,25 @@ class Counter(discord.ui.View):
 async def counter(ctx: commands.Context):
     """Starts a counter for pressing."""
     await ctx.send('Press!', view=Counter())
+
+
+class Roles(discord.ui.View):
+    def __int__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(label="Role 1", custom_id='Role 1', style=discord.ButtonStyle.green)
+    async def button_1(self, interaction, button):
+        role = 1085837013753790536
+        user = interaction.user
+        if role in [y.id for y in user.roles]:
+            await user.remove_roles(user.guild.get_role(role))
+            await interaction.response.send_message("Role 1 removed", ephemeral=True)
+        else:
+            await user.add_roles(user.guild.get_role(role))
+            await interaction.response.send_message("Role 1 added", ephemeral=True)
+
+
+@bot.command()
+async def roles(ctx: commands.Context):
+    embed = discord.Embed(title="Roles", description="Click the buttons to add/remove roles", color=0x00ff00)
+    await ctx.send(embed=embed, view=Roles())
