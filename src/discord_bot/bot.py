@@ -1,3 +1,5 @@
+import logging
+
 import discord
 from discord.ext import commands
 
@@ -14,6 +16,17 @@ bot = commands.Bot(command_prefix="$", intents=intents)
 async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.errors.CommandNotFound):
+        return
+    logging.exception(f'Error executing command "{ctx.message.content}"', exc_info=error)
+
+    # Create a new file and log the error there
+    with open('error.log', 'a') as f:
+        f.write(f'{error} command: {ctx.message.content}\n')
 
 
 @bot.event
