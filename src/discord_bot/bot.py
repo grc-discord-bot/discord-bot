@@ -8,6 +8,7 @@ from src.discord_bot import responses
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
+landed_channel_id = 1044095575282425906
 
 bot = commands.Bot(command_prefix="$", intents=intents)
 
@@ -29,7 +30,12 @@ async def on_command_error(ctx, error):
         f.write(f'{error} command: {ctx.message.content}\n')
 
 
-@bot.event
+async def send_to_landed_channel(message):
+    channel = bot.get_channel(landed_channel_id)
+    if channel:
+        await channel.send(message)
+
+
 async def on_member_join(member):
     guild = member.guild
     if guild.system_channel is not None:
@@ -37,16 +43,21 @@ async def on_member_join(member):
         await guild.system_channel.send(to_send)
         await member.send(
             f'Hello {member.name}! Welcome. '
-            f'check out the announcements channel for important information about the club. '
+            f'Check out the announcements channel for important information about the club. '
             f'https://discord.com/channels/1043278905806692442/1043279855938191381')
 
+        # Send a message to the landed channel
+        await send_to_landed_channel(f'{member.name} has joined {guild.name}!')
 
-@bot.event
-async def on_member_leave(member):
+
+async def on_member_remove(member):
     guild = member.guild
     if guild.system_channel is not None:
         to_send = f'Goodbye {member.mention} from {guild.name}!'
         await guild.system_channel.send(to_send)
+
+        # Send a message to the landed channel
+        await send_to_landed_channel(f'{member.name} has left {guild.name}!')
 
 
 @bot.command()
