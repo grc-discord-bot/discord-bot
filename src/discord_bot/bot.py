@@ -12,6 +12,9 @@ landed_channel_id = 1044095575282425906
 
 bot = commands.Bot(command_prefix="$", intents=intents)
 
+# Remove the default help command
+bot.remove_command('help')
+
 
 @bot.event
 async def on_ready():
@@ -67,7 +70,7 @@ async def joined(ctx, member: discord.Member):
 
 
 @bot.command()
-async def _help(ctx):
+async def help(ctx):  # pylint: disable=W0613
     response = responses.get_response('help')
     await ctx.send(response)
 
